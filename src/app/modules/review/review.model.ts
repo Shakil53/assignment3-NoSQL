@@ -20,31 +20,13 @@ const reviewSchema = new Schema({
     },
     });
 
-    // if already have review
+    // checking the course is available or not
     reviewSchema.pre('save', async function (next) {
-    const isCourseIdExist = await ReviewModel.findOne({
-      courseId: this.courseId,
-    });
-  
-    if (isCourseIdExist) {
-      throw new AppError(
-        httpStatus.NOT_FOUND,
-        'This Course Id Have already your review',
-      );
-    }
-  
-    next();
-  });
-
-
-
-  //checking the course is avaiable or not 
-  reviewSchema.pre('save', async function (next) {
     const isCourseIdExist = await CourseModel.findOne({
       _id: this.courseId,
     });
   
-    if (!isCourseIdExist) {
+    if (isCourseIdExist) {
       throw new AppError(
         httpStatus.NOT_FOUND,
         'There is no Course with this courseId',
