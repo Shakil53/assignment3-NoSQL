@@ -1,49 +1,57 @@
-import { RequestHandler,Request, Response, NextFunction } from "express";
 import { CourseService } from "./course.service";
 import catchAsync from "../../utility/catchAsync";
+import sendResponse from "../../utility/sendResponse";
+import httpStatus from "http-status";
 
 
 
-
-
-
-const createCourse = catchAsync(async (req, res, next) => {
+//create course
+const createCourse = catchAsync(async (req, res) => {
     
     const result = await CourseService.createCourseIntoDB(req.body)
     
-        // TODO  sendrespose message
-
+    sendResponse(res, {
+        statusCode: httpStatus.CREATED,
+        success: true,
+        message: "Course created successfully",
+        data: result
+    })
    
 })
 
 const getAllCourse = catchAsync(async (req, res) => {
     const result = await CourseService.getAllCourses();
 
-    // TODO sendResponse
+    sendResponse(res, {
+        statusCode: httpStatus.OK,
+        success: true,
+        message: "Courses retrieved successfully",
+        data: result
+    })
+    
 })
 
 
-const getSingleCourse = catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const result = await CourseService.getSingleCourse(id)
+// const getSingleCourse = catchAsync(async (req, res) => {
+//     const { id } = req.params;
+//     const result = await CourseService.getSingleCourse(id)
 
-    // TODO sendResponse
-})
+//     // TODO sendResponse
+// })
 
-const updateCourse = catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const resutl = await CourseService.updateCourseIntoDB(id, req.body)
+// const updateCourse = catchAsync(async (req, res) => {
+//     const { id } = req.params;
+//     const resutl = await CourseService.updateCourseIntoDB(id, req.body)
 
 
-    // TODO sendResponse
-})
+//     // TODO sendResponse
+// })
 
 
 
 export const CourseController = {
     createCourse,
     getAllCourse,
-    getSingleCourse,
-    updateCourse,
+   
 
 }

@@ -1,52 +1,83 @@
 import { Schema, model } from "mongoose";
-import { TCourse, TDetails, TTags } from "./course.interface";
+import { TCourse, TTags } from "./course.interface";
+import AppError from "../../errors/AppError";
+import httpStatus from "http-status";
 
 const tagsSchema = new Schema<TTags>({
     name: {
         type: String,
+        required: true
     },
     isDeleted: {
-        type: Boolean
+        type: Boolean,
+        default: false
     }
 }) 
-const detailsSchema = new Schema<TDetails>({
-    level: String,
-    description: String,
-})
+
 
 const courseSchema = new Schema<TCourse>({
-    _id: {
-        type: Schema.Types.ObjectId
-    },
+   
     title: {
         type: String,
+        unique: true,
+        required: true
     },
     instructor: {
-        type: String
+        type: String,
+        required: true
     },
     categoryId: {
         type: Schema.Types.ObjectId,
-        ref: 'Category'
+        ref: 'Category',
+        required: true
     },
     price: {
-        type: Number
+        type: Number,
+        required: true
     },
     tags: [tagsSchema],
     startDate: {
-        type: String
+        type: String,
+        required: true
+        
     },
     endDate: {
-        type: String
+        type: String,
+        required: true
     },
     provider: {
-        type: String
+        type: String,
+        required: true
     },
     durationInWeeks: {
-        type: Number
+        type: Number,
+        required: true
     },
     details: {
-        type: detailsSchema
+        level: {
+            type: String,
+            required: true,
+            enum: ['Beginner', 'Intermediate', 'Advanced']
+       }
+    },
+    description: {
+        type: String,
+        required: true
     }
+})
+
+//pre hook middleware
+courseSchema.pre('save', async function (next) {
+    const isCourseExist = await CourseModel.findOne({
+        title: this.title,
+    })
+    if (isCourseExist) {
+        throw new AppError(
+            httpStatus.NOT_FOUND,
+            'This Course is already exist!'
+        )
+    }
+    next()
 })
 
 //model create with courseSchema
