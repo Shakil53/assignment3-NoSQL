@@ -22,30 +22,18 @@ const getAllCourses = async () => {
     return result;
 }
 
+//get single course with reviews
+const getSingleCourseWithReviewFromDB = async (courseId: string) => {
+    const result = await CourseModel.findOne({ _id: courseId }).populate('reviews')
+    return result;
+  };
 
-// const getSingleCourse = async (id: string) => {
-//     const result = await CourseModel.findById(id);
-//     return result;
-// }
-
-// const updateCourseIntoDB = async (id: string,
-//     payload: Partial<TCourse>) => {
-//     const result = await CourseModel.findOneAndUpdate(
-//         {
-//             _id: id
-//         },
-//         payload,
-//         {
-//             new: true,
-//         }
-//     ) 
-//     return result;
-// }
 
 
 export const CourseService ={
     createCourseIntoDB,
     getAllCourses,
+    getSingleCourseWithReviewFromDB
    
 
 

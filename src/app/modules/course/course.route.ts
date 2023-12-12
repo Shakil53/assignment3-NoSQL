@@ -13,5 +13,7 @@ router.post('/course',
 
 router.get('/courses', CourseController.getAllCourse)
 
+router.get('/courses/:courseId/reviews',CourseController.getSingleCourseWithReview)
+
 
 export const CourseRoutes = router;

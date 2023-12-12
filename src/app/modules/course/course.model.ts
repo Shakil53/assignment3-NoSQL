@@ -45,6 +45,10 @@ const courseSchema = new Schema<TCourse>({
         type: String,
         required: true
     },
+    language: {
+        type: String,
+        required: true
+      },
     provider: {
         type: String,
         required: true
@@ -64,9 +68,26 @@ const courseSchema = new Schema<TCourse>({
         type: String,
         required: true
     }
+}, {
+    toJSON: {
+        virtuals: true,
+    },
 })
 
+courseSchema.virtual('reviews', {
+    ref: 'Review', 
+    localField: '_id',
+    foreignField: 'courseId',
+});
+  
+
 //pre hook middleware
+courseSchema.pre('findOne', function (next) {
+    this.populate('reviews');
+    next();
+  })
+
+  
 courseSchema.pre('save', async function (next) {
     const isCourseExist = await CourseModel.findOne({
         title: this.title,

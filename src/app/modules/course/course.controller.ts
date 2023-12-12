@@ -31,27 +31,24 @@ const getAllCourse = catchAsync(async (req, res) => {
     
 })
 
+//get single course
+const getSingleCourseWithReview = catchAsync(async (req, res) => {
+  const  {courseId }  = req.params;
+  const course = await CourseService.getSingleCourseWithReviewFromDB(courseId);
 
-// const getSingleCourse = catchAsync(async (req, res) => {
-//     const { id } = req.params;
-//     const result = await CourseService.getSingleCourse(id)
-
-//     // TODO sendResponse
-// })
-
-// const updateCourse = catchAsync(async (req, res) => {
-//     const { id } = req.params;
-//     const resutl = await CourseService.updateCourseIntoDB(id, req.body)
-
-
-//     // TODO sendResponse
-// })
-
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Course and Reviews retrieved successfully',
+    data: {course : course},
+  });
+});
 
 
 export const CourseController = {
     createCourse,
     getAllCourse,
+    getSingleCourseWithReview
    
 
 }
