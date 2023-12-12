@@ -1,14 +1,7 @@
 import { Response} from 'express';
-import { Schema } from 'mongoose';
 
-// type TResBody = {
-//     _id: Schema.Types.ObjectId,
-//     title: string,
-//     instructor: string,
-//     categoryId: Schema.Types.ObjectId,
-//     price: number,
 
-// }
+
 type TResponse<T> = {
     success: boolean,
     statusCode: number,
@@ -19,6 +12,7 @@ type TResponse<T> = {
 const sendResponse = <T>(res: Response, data: TResponse<T>) => {
     res.status(data?.statusCode).json({
         success: data.success,
+        statusCode: data.statusCode,
         message: data.message,
         data: data.data
     })
