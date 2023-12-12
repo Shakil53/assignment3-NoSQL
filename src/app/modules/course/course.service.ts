@@ -46,8 +46,7 @@ const getAllCourses = async () => {
 export const CourseService ={
     createCourseIntoDB,
     getAllCourses,
-    getSingleCourse,
-    updateCourseIntoDB
+   
 
 
 

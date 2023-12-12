@@ -1,13 +1,17 @@
-
-
 import express from 'express'
 import { CourseController } from './course.controller'
+import validateRequest from '../../middlewares/validateRequest';
+import { CourseValidations } from './course.validation';
 
 
  const router = express.Router()
 
 
-router.post('/create-courses', CourseController.createCourse)
+router.post('/course',
+    validateRequest(CourseValidations.CourseValidationSchema),
+    CourseController.createCourse)
+
+router.get('/courses', CourseController.getAllCourse)
 
 
 export const CourseRoutes = router;
